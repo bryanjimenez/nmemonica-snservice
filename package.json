@@ -1,0 +1,72 @@
+{
+  "private": true,
+  "name": "@nmemonica/snservice",
+  "version": "0.0.1",
+  "description": "Data sync service",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/utils/config.d.ts",
+      "import": "./dist/utils/config.js",
+      "default": "./dist/utils/config.js"
+    },
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "import": "./dist/*.js",
+      "default": "./dist/*.js"
+    }
+  },
+  "files": [
+    "dist",
+    "api-docs"
+  ],
+  "scripts": {
+    "test": "mocha -r ts-node/register ./test/unit/**/*.ts",
+    "type": "tsc -b --verbose",
+    "coverage": "nyc npm run test > '/dev/null'; nyc report",
+    "prebuild": "rm -rf ./dist",
+    "build": "tsc -b ./tsconfig.types.json ./tsconfig.esm.json",
+    "postbuild": "npx swagger-jsdoc -d ./api-docs/swaggerDef.cjs ./src/routes/*.ts -o ./api-docs/swaggerSpec.json",
+    "start": "node ./dist/index.js ",
+    "staged": "git diff --staged --diff-filter=d --name-only",
+    "lint": "npm run -s staged | xargs eslint --fix",
+    "lint:all": "DEBUG=*,-@hwc*,-eslint:code-path eslint .",
+    "pretty": "npm run -s staged | xargs prettier --write"
+  },
+  "author": "Bryan Jimenez",
+  "license": "MIT",
+  "homepage": "https://bryanjimenez.github.io",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bryanjimenez/nmemonica-snservice.git"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.1.5",
+    "md5": "^2.3.0",
+    "multiparty": "^4.2.3",
+    "swagger-ui-express": "^5.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^8.56.0",
+    "@types/eslint__js": "^8.42.3",
+    "@types/express": "^4.17.21",
+    "@types/md5": "^2.3.5",
+    "@types/multiparty": "^0.0.36",
+    "@types/node": "^20.10.5",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.6",
+    "@typescript-eslint/eslint-plugin": "^6.16.0",
+    "@typescript-eslint/parser": "^6.16.0",
+    "eslint-plugin-prettier": "^5.1.2",
+    "mocha": "^10.2.0",
+    "nyc": "^15.1.0",
+    "prettier": "^3.1.1",
+    "swagger-jsdoc": "^6.2.8",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.1.3"
+  }
+}

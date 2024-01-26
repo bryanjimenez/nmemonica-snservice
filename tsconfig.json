@@ -1,0 +1,49 @@
+{
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "dist/",
+
+    "strict": true,
+    "skipLibCheck": true,
+
+    "target": "ES6",
+
+    "module": "ES2022",
+    "lib": ["ES2021.String"],
+
+    "moduleResolution": "Bundler",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "checkJs": true,
+
+    "removeComments": true
+  },
+  "include": ["index.ts", "index.cts", "./src", "./utils", "./external"],
+
+  "ts-node": {
+    // For mocha -r ts-node/register
+
+    // disregard typescript errors before transpilation
+    // env TS_NODE_TRANSPILE_ONLY=true
+    "transpileOnly": true,
+    // Override tsc config just for run
+    // Skip stuff for faster loading
+    "skipLibCheck": true,
+
+    // ERR_UNKNOWN_FILE_EXTENSION .ts
+    "esm": true,
+
+    "compilerOptions": {
+      "moduleResolution": "Node"
+    },
+
+    // override package.json *type: module* setting
+    // worked for ts-node@9.1.1
+    // env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ...
+    "moduleTypes": {
+      "./test/**/*.ts": "cjs",
+      "./src/**/*.ts": "cjs"
+    }
+  }
+}

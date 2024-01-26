@@ -1,0 +1,196 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "@nmemonica/snservice",
+    "version": "0.0.1",
+    "description": "Express API for @nmemonica/snservice"
+  },
+  "paths": {
+    "/audio": {
+      "get": {
+        "description": "gets audio pronunciation for a word in a language",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "tl",
+            "required": true,
+            "description": "target language",
+            "schema": {
+              "type": "string"
+            },
+            "example": "en"
+          },
+          {
+            "in": "query",
+            "name": "q",
+            "required": true,
+            "description": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "word"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "an audio of the query in the target language",
+            "content": {
+              "audio/mpeg": {
+                "schema": {
+                  "type": "file",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/lambda/{data}.json": {
+      "get": {
+        "description": "get dataset description here",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "data",
+            "required": true,
+            "description": "dataset resource requested",
+            "schema": {
+              "type": "string"
+            },
+            "example": "vocabulary"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Vocabulary.json",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "6f48c35203f9078a46baf913e5b8824e": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/Vocabulary"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workbook": {
+      "get": {
+        "description": "get workbook object",
+        "responses": {
+          "200": {
+            "description": "an xspreadsheet object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/xspreadsheet"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "description": "save a workbook object multipart object ...",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/xspreadsheet"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "hash": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Vocabulary": {
+        "type": "object",
+        "properties": {
+          "japanese": {
+            "type": "string",
+            "description": "Japanese definition",
+            "example": "にんげん\\n人間"
+          },
+          "english": {
+            "type": "string",
+            "description": "English definition",
+            "example": "human"
+          },
+          "romaji": {
+            "type": "string",
+            "description": "romaji pronunciation",
+            "example": "ningen"
+          },
+          "grp": {
+            "type": "string",
+            "description": "main group",
+            "example": "Noun"
+          },
+          "subGrp": {
+            "type": "string",
+            "description": "sub group",
+            "example": "People"
+          }
+        }
+      },
+      "xspreadsheet": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "name of sheet",
+            "examples": "Phrases Vocabulary Kanji"
+          },
+          "cols": {
+            "description": "column properties",
+            "type": "object"
+          },
+          "rows": {
+            "description": "row and cell data",
+            "type": "object"
+          },
+          "merges": {
+            "type": "object"
+          },
+          "styles": {
+            "description": "cell style information",
+            "type": "object"
+          },
+          "freeze": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  },
+  "tags": []
+}
